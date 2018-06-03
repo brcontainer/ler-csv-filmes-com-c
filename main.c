@@ -1,6 +1,7 @@
-#include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 #define MAX_LINE 1024
 #define MAX_ACTORS 20
@@ -9,16 +10,17 @@
 
 typedef struct
 {
-    char nome[MAX_NAME];
     char ano[5];
+    char nome[MAX_NAME];
     char diretor[MAX_NAME];
     char atores[MAX_NAME][MAX_ACTORS];
+    int total_filmes;
     int total_atores;
 } Filme;
 
 void cls()
 {
-    system("clear||cls");
+    system("cls||clear");
 }
 
 void analise(Filme *filme, const char *item)
@@ -48,7 +50,7 @@ void analise(Filme *filme, const char *item)
     filme->total_atores = i - 4;
 }
 
-int carregar(Filme filmes[], char *csv)
+void carregar(Filme filmes[], char *csv)
 {
     FILE *stream;
     int i = 0;
@@ -68,15 +70,15 @@ int carregar(Filme filmes[], char *csv)
         fclose(stream);
     }
 
-    return i;
+    filmes->total_filmes = i;
 }
 
-void exibir(Filme filmes[], const int total)
+void exibir(Filme filmes[])
 {
+    int x = 0, y = 0, z = 0, total = filmes->total_filmes;
+
     printf("Total de filmes: %d/%d\n", total, MAX_MOVIES);
     printf("----------------\n");
-
-    int x = 0, y = 0, z = 0;
 
     for (; x < total; x++) {
         printf(" - Nome:    %s\n", filmes[x].nome);
@@ -93,11 +95,14 @@ void exibir(Filme filmes[], const int total)
 
 int main()
 {
+    setlocale(LC_ALL, "Portuguese");
+
     Filme filmes[MAX_MOVIES];
 
-    int total = carregar(filmes, "C:/DATA/filmes.csv");
-    int active = 1;
-    int opcao = 0;
+    carregar(filmes, "C:/DATA/filmes.csv");
+
+    int active = 1, opcao = 0;
+    char d;
 
     while (active) {
         cls();
@@ -109,14 +114,17 @@ int main()
         printf("4 - Deletar\n");
         printf("5 - Fechar\n");
 
-        scanf("%d", &opcao);
+        d = getchar();
 
+        getchar();
         cls();
+
+        opcao = d - '0';
 
         switch (opcao)
         {
             case 1:
-                exibir(filmes, total);
+                exibir(filmes);
                 break;
 
             case 2:
@@ -144,9 +152,7 @@ int main()
             break;
         }
 
-        fflush(stdin);
-
-        printf("Precione qualquer tecla para continuar\n");
+        printf("Precione <Enter> para continuar\n");
         getchar();
     }
 
