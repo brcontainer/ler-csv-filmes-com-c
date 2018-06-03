@@ -103,11 +103,11 @@ int main()
         cls();
 
         printf("Escolha uma das opções:\n");
-        printf("1 - Exibir:\n");
-        printf("2 - Buscar:\n");
-        printf("3 - Adicionar:\n");
-        printf("4 - Deletar:\n");
-        printf("5 - Fechar:\n");
+        printf("1 - Exibir\n");
+        printf("2 - Buscar\n");
+        printf("3 - Adicionar\n");
+        printf("4 - Deletar\n");
+        printf("5 - Fechar\n");
 
         scanf("%d", &opcao);
 
